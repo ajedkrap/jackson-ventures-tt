@@ -20,9 +20,9 @@ import { styles } from './Scanner.style'
 import { TAppStackParamList } from '@/navigation/types'
 import { parseTableQr } from '@/utils/qr'
 
-type Props = NativeStackScreenProps<TAppStackParamList, 'Scanner'>
+type TScannerProps = NativeStackScreenProps<TAppStackParamList, 'Scanner'>
 
-const Scanner = ({ navigation }: Props) => {
+const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
   const [permission, requestPermission] = useCameraPermissions()
   const [manualOpen, setManualOpen] = useState(false)
   const [manualInput, setManualInput] = useState('')

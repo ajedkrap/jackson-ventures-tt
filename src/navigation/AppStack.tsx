@@ -1,8 +1,4 @@
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { TAppStackParamList } from './types'
 
@@ -13,47 +9,6 @@ import OrderConfirmation from '@/screens/OrderConfirmation'
 import OrderTracking from '@/screens/OrderTracking'
 import Scanner from '@/screens/Scanner'
 import { Colors } from '@/theme'
-
-type TAppStackScreen = {
-  name: keyof TAppStackParamList
-  component: React.ComponentType<
-    NativeStackScreenProps<TAppStackParamList, keyof TAppStackParamList>
-  >
-  options?: NativeStackNavigationOptions
-}
-
-const appStackScreens: TAppStackScreen[] = [
-  {
-    name: 'Scanner',
-    component: Scanner,
-    options: { title: 'Scan Table' },
-  },
-  {
-    name: 'Menu',
-    component: Menu,
-    options: { title: 'Menu' },
-  },
-  {
-    name: 'ItemDetail',
-    component: ItemDetail,
-    options: { presentation: 'modal', title: 'Customize' },
-  },
-  {
-    name: 'Cart',
-    component: Cart,
-    options: { title: 'Your Cart' },
-  },
-  {
-    name: 'OrderConfirmation',
-    component: OrderConfirmation,
-    options: { title: 'Order Placed', headerBackVisible: false },
-  },
-  {
-    name: 'OrderTracking',
-    component: OrderTracking,
-    options: { title: 'Order Status' },
-  },
-]
 
 const { Navigator, Screen } = createNativeStackNavigator<TAppStackParamList>()
 
@@ -67,9 +22,20 @@ const AppStack = () => {
         headerTitleStyle: { fontWeight: '600' },
       }}
     >
-      {appStackScreens.map((props) => (
-        <Screen key={props.name} {...props} />
-      ))}
+      <Screen name="Scanner" component={Scanner} options={{ title: 'Scan Table' }} />
+      <Screen name="Menu" component={Menu} options={{ title: 'Menu' }} />
+      <Screen
+        name="ItemDetail"
+        component={ItemDetail}
+        options={{ presentation: 'modal', title: 'Customize' }}
+      />
+      <Screen name="Cart" component={Cart} options={{ title: 'Your Cart' }} />
+      <Screen
+        name="OrderConfirmation"
+        component={OrderConfirmation}
+        options={{ title: 'Order Placed', headerBackVisible: false }}
+      />
+      <Screen name="OrderTracking" component={OrderTracking} options={{ title: 'Order Status' }} />
     </Navigator>
   )
 }
