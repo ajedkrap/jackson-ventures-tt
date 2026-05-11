@@ -19,6 +19,7 @@ import styles from './Menu.style'
 
 import type { ICategory, IMenuItem } from '@/models/menu'
 import { TAppStackParamList } from '@/navigation/types'
+import { useCartStore } from '@/state/cartStore'
 import { useMenuStore } from '@/state/menuStore'
 import { Colors } from '@/theme'
 
@@ -30,6 +31,7 @@ const formatPrice = (n: number) => `$${n.toFixed(2)}`
 const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
   const { tableId } = route.params
   const { menu, loading, error, fetchMenu } = useMenuStore()
+  const { lines } = useCartStore()
   const sectionListRef = useRef<SectionList<IMenuItem, { category: ICategory }>>(null)
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -44,10 +46,15 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
       headerRight: () => (
         <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.headerCartBtn}>
           <Text style={styles.headerCartText}>Cart</Text>
+          {lines.length > 0 && (
+            <View style={styles.headerCartBadge}>
+              <Text style={styles.headerCartBadgeText}>{lines.length}</Text>
+            </View>
+          )}
         </TouchableOpacity>
       ),
     })
-  }, [menu, navigation])
+  }, [menu, lines, navigation])
 
   const sections = useMemo<TMenuSectionData[]>(() => {
     if (!menu) return []

@@ -1,13 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useLayoutEffect, useMemo, useState } from 'react'
-import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import styles from './ItemDetail.style'
 
-import { ICustomizationGroup } from '@/models/menu'
+import { ICustomizationGroup, IMenuItem } from '@/models/menu'
 import { TAppStackParamList } from '@/navigation/types'
+import { useCartStore } from '@/state/cartStore'
 import { useMenuStore } from '@/state/menuStore'
+import { buildCartLine } from '@/utils/cart'
 import {
   validateSelection,
   calculateItemTotal,
@@ -26,11 +28,15 @@ const groupHelperText = (group: ICustomizationGroup): string => {
 
 const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
   const { itemId } = route.params
-  const menu = useMenuStore((s) => s.menu)
+  const { menu } = useMenuStore()
+  const { addLine } = useCartStore()
   const [selection, setSelection] = useState<TSelection>({})
   const [quantity, setQuantity] = useState(1)
 
-  const item = useMemo(() => menu?.items.find((i) => i.id === itemId) ?? null, [menu, itemId])
+  const item = useMemo(
+    () => menu?.items.find((i: IMenuItem) => i.id === itemId) ?? null,
+    [menu, itemId]
+  )
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: item?.name ?? 'Customize' })
@@ -54,16 +60,8 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
 
   const handleAddToCart = () => {
     if (!isValid) return
-    const customizations = Object.values(selection)
-      .flat()
-      .map((option_id) => ({ option_id, quantity: 1 }))
-    console.log('add-to-cart payload', {
-      menu_item_id: item.id,
-      quantity,
-      customizations,
-    })
-
-    // TODO: Add to Cart
+    addLine(buildCartLine(item, selection, quantity))
+    navigation.goBack()
   }
 
   return (

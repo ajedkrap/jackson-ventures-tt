@@ -12,11 +12,13 @@ interface IMenuState {
   reset: () => void
 }
 
-const initialState = {
+const initialState: IMenuState = {
   menu: null,
   tableId: null,
   loading: false,
   error: null,
+  fetchMenu: async () => {},
+  reset: () => {},
 }
 
 export const useMenuStore = create<IMenuState>((set, get) => ({
