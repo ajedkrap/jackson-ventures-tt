@@ -1,10 +1,10 @@
 import { create } from 'zustand'
 
 import { getMenu, AppError, normalizeError } from '@/api'
-import type { MenuResponse } from '@/models/menu'
+import type { IMenuResponse } from '@/models/menu'
 
-interface MenuState {
-  menu: MenuResponse | null
+interface IMenuState {
+  menu: IMenuResponse | null
   tableId: string | null
   loading: boolean
   error: AppError | null
@@ -19,7 +19,7 @@ const initialState = {
   error: null,
 }
 
-export const useMenuStore = create<MenuState>((set, get) => ({
+export const useMenuStore = create<IMenuState>((set, get) => ({
   ...initialState,
   fetchMenu: async (tableId) => {
     if (get().menu && get().tableId === tableId) return

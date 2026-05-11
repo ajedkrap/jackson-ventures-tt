@@ -34,7 +34,7 @@ export interface IMenuItem {
   customization_groups: ICustomizationGroup[]
 }
 
-export interface MenuResponse {
+export interface IMenuResponse {
   restaurant: IRestaurant
   categories: ICategory[]
   items: IMenuItem[]
