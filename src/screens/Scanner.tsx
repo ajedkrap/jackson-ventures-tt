@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { styles } from './Scanner.style'
+import styles from './Scanner.style'
 
 import { TAppStackParamList } from '@/navigation/types'
 import { parseTableQr } from '@/utils/qr'
