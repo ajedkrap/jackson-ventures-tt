@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "jackson-ventures",
-    "slug": "jackson-ventures",
+    "name": "Jackson Ventures Test",
+    "slug": "jackson-ventures-test",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.dezza.jacksonventuretest"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,10 +22,19 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "dev.dezza.jacksonventuretest"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Jackson Ventures Test to access your camera to scan table QR codes."
+        }
+      ]
+    ]
   }
 }
