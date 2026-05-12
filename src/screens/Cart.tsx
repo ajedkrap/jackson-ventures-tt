@@ -1,6 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useLayoutEffect, useMemo } from 'react'
-import { View, Text, FlatList, TextInput, TouchableOpacity, Alert } from 'react-native'
+import {
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import styles from './Cart.style'
@@ -8,19 +16,23 @@ import styles from './Cart.style'
 import type { ICartLine } from '@/models/cart'
 import { TAppStackParamList } from '@/navigation/types'
 import { useCartStore } from '@/state/cartStore'
+import { useMenuStore } from '@/state/menuStore'
+import { useOrderStore } from '@/state/orderStore'
 import { Colors } from '@/theme'
-import { lineSubtotal, cartSubtotal, cartItemCount } from '@/utils/cart'
+import { lineSubtotal, cartSubtotal, cartItemCount, buildOrderPayload } from '@/utils/cart'
 import { formatPrice } from '@/utils/format'
 
-type Props = NativeStackScreenProps<TAppStackParamList, 'Cart'>
+type TCartProps = NativeStackScreenProps<TAppStackParamList, 'Cart'>
 
-const Cart = ({ navigation }: Props) => {
+const Cart: React.FC<TCartProps> = ({ navigation }) => {
   const lines = useCartStore((s) => s.lines)
   const customerNote = useCartStore((s) => s.customerNote)
   const updateQuantity = useCartStore((s) => s.updateQuantity)
   const removeLine = useCartStore((s) => s.removeLine)
   const setCustomerNote = useCartStore((s) => s.setCustomerNote)
   const clear = useCartStore((s) => s.clear)
+  const { tableId } = useMenuStore()
+  const { submitting, submitError, submit } = useOrderStore()
 
   const subtotal = useMemo(() => cartSubtotal(lines), [lines])
   const itemCount = useMemo(() => cartItemCount(lines), [lines])
@@ -45,10 +57,14 @@ const Cart = ({ navigation }: Props) => {
     })
   }, [lines, itemCount, navigation, clear])
 
-  const handlePlaceOrder = () => {
-    if (lines.length === 0) return
-    // TODO: submit order through order tore
-    navigation.navigate('OrderConfirmation', { orderId: 'ord-001' })
+  const handlePlaceOrder = async () => {
+    if (lines.length === 0 || !tableId || submitting) return
+    const payload = buildOrderPayload(tableId, lines, customerNote)
+    const order = await submit(payload)
+    if (order) {
+      clear()
+      navigation.replace('OrderConfirmation', { orderId: order.id })
+    }
   }
 
   if (lines.length === 0) {
@@ -138,8 +154,17 @@ const Cart = ({ navigation }: Props) => {
           <Text style={styles.totalLabel}>Subtotal</Text>
           <Text style={styles.totalValue}>{formatPrice(subtotal)}</Text>
         </View>
-        <TouchableOpacity style={styles.placeBtn} onPress={handlePlaceOrder}>
-          <Text style={styles.placeBtnText}>Place order</Text>
+        {submitError && <Text style={styles.errorText}>{submitError.message}</Text>}
+        <TouchableOpacity
+          style={[styles.placeBtn, (submitting || !tableId) && styles.placeBtnDisabled]}
+          onPress={handlePlaceOrder}
+          disabled={submitting || !tableId}
+        >
+          {submitting ? (
+            <ActivityIndicator color={Colors.textInverse} />
+          ) : (
+            <Text style={styles.placeBtnText}>Place order</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>

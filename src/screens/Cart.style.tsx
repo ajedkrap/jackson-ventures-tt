@@ -181,6 +181,14 @@ const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: '700',
   },
+  placeBtnDisabled: {
+    opacity: 0.6,
+  },
+  errorText: {
+    color: Colors.error,
+    fontSize: FontSize.sm,
+    textAlign: 'center',
+  },
 })
 
 export default styles

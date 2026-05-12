@@ -54,7 +54,7 @@ export const useCartStore = create<ICartState>()(
       clear: () => set({ lines: [], customerNote: '' }),
     }),
     {
-      name: 'ipot.cart.v1',
+      name: 'cart',
       storage: createJSONStorage(() => AsyncStorage),
     }
   )
