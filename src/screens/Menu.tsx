@@ -132,7 +132,7 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
   if (error && !menu) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorTitle}>Couldn't load menu</Text>
+        <Text style={styles.errorTitle}>{`Couldn't load menu`}</Text>
         <Text style={styles.errorBody}>{error.message}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={() => fetchMenu(tableId)}>
           <Text style={styles.retryText}>Retry</Text>

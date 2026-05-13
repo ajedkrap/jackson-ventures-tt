@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
     fontSize: FontSize.sm,
   },
-
 })
 
 export default styles

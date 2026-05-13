@@ -49,7 +49,7 @@ const OrderTracking = ({ navigation, route }: Props) => {
   if (error && !order) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorTitle}>Couldn't load order</Text>
+        <Text style={styles.errorTitle}>{`Couldn't load order`}</Text>
         <Text style={styles.errorBody}>{error.message}</Text>
         <TouchableOpacity onPress={retry} style={styles.retryBtn}>
           <Text style={styles.retryText}>Retry</Text>

@@ -149,7 +149,7 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
       />
       <SafeAreaView style={styles.overlay} pointerEvents="box-none">
         <View style={styles.topBar}>
-          <Text style={styles.hint}>Point at the table's QR code</Text>
+          <Text style={styles.hint}>{`Point at the table's QR code`}</Text>
         </View>
         <View style={styles.frameWrap}>
           <View style={styles.frame} />
