@@ -81,6 +81,7 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
           <Text style={styles.modalTitle}>Enter table ID</Text>
           <Text style={styles.modalBody}>Find the ID printed on your table (e.g. T001).</Text>
           <TextInput
+            accessibilityLabel="Table ID input"
             value={manualInput}
             onChangeText={(v) => {
               setManualInput(v)
@@ -97,10 +98,18 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
           />
           {manualError && <Text style={styles.modalErrorText}>{manualError}</Text>}
           <View style={styles.modalActions}>
-            <TouchableOpacity onPress={() => setManualOpen(false)} style={styles.modalSecondaryBtn}>
+            <TouchableOpacity
+              accessibilityRole="button"
+              onPress={() => setManualOpen(false)}
+              style={styles.modalSecondaryBtn}
+            >
               <Text style={styles.modalSecondaryText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={submitManualEntry} style={styles.modalPrimaryBtn}>
+            <TouchableOpacity
+              accessibilityRole="button"
+              onPress={submitManualEntry}
+              style={styles.modalPrimaryBtn}
+            >
               <Text style={styles.modalPrimaryText}>Continue</Text>
             </TouchableOpacity>
           </View>
@@ -123,15 +132,29 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
         <Text style={styles.title}>Camera access needed</Text>
         <Text style={styles.body}>We use your camera to scan table QR codes.</Text>
         {permission.canAskAgain ? (
-          <TouchableOpacity style={styles.primaryButton} onPress={requestPermission}>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={requestPermission}
+            accessibilityRole="button"
+            accessibilityLabel="Grant access to camera"
+          >
             <Text style={styles.primaryButtonText}>Grant access</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.primaryButton} onPress={() => Linking.openSettings()}>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => Linking.openSettings()}
+            accessibilityRole="link"
+            accessibilityLabel="Open settings to grant access to camera"
+          >
             <Text style={styles.primaryButtonText}>Open settings</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={openManualEntry}>
+        <TouchableOpacity
+          onPress={openManualEntry}
+          accessibilityRole="button"
+          accessibilityLabel="Enter table ID manually"
+        >
           <Text style={styles.linkButton}>Enter table ID manually</Text>
         </TouchableOpacity>
         {renderManualEntryModal()}
@@ -155,7 +178,11 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
           <View style={styles.frame} />
         </View>
         <View style={styles.bottomBar}>
-          <TouchableOpacity onPress={openManualEntry}>
+          <TouchableOpacity
+            onPress={openManualEntry}
+            accessibilityRole="button"
+            accessibilityLabel="Enter table ID manually"
+          >
             <Text style={styles.linkButtonLight}>Enter table ID manually</Text>
           </TouchableOpacity>
         </View>

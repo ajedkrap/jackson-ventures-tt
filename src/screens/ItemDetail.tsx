@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useLayoutEffect, useMemo, useState } from 'react'
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, AccessibilityInfo } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import styles from './ItemDetail.style'
@@ -46,7 +46,11 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
     return (
       <SafeAreaView style={styles.notFound}>
         <Text style={styles.errorTitle}>Item not found</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.primaryBtn}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.primaryBtn}
+          accessibilityRole="button"
+        >
           <Text style={styles.primaryBtnText}>Back to menu</Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -61,6 +65,7 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
   const handleAddToCart = () => {
     if (!isValid) return
     addLine(buildCartLine(item, selection, quantity))
+    AccessibilityInfo.announceForAccessibility(`Added ${quantity} ${item.name} to cart`)
     navigation.goBack()
   }
 
@@ -173,6 +178,9 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
           style={[styles.addBtn, !isValid && styles.addBtnDisabled]}
           disabled={!isValid}
           onPress={handleAddToCart}
+          accessibilityRole="button"
+          accessibilityState={{ disabled: !isValid }}
+          accessibilityLabel={`Add to cart, total ${formatPrice(total)}`}
         >
           <Text style={styles.addBtnText}>Add to cart — {formatPrice(total)}</Text>
         </TouchableOpacity>

@@ -44,7 +44,12 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
     navigation.setOptions({
       title: menu?.restaurant.name ?? 'Menu',
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('Cart')} style={styles.headerCartBtn}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Cart')}
+          style={styles.headerCartBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Open cart"
+        >
           <Text style={styles.headerCartText}>Cart</Text>
           {lines.length > 0 && (
             <View style={styles.headerCartBadge}>
@@ -134,7 +139,11 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
       <View style={styles.centered}>
         <Text style={styles.errorTitle}>{`Couldn't load menu`}</Text>
         <Text style={styles.errorBody}>{error.message}</Text>
-        <TouchableOpacity style={styles.retryBtn} onPress={() => fetchMenu(tableId)}>
+        <TouchableOpacity
+          style={styles.retryBtn}
+          onPress={() => fetchMenu(tableId)}
+          accessibilityRole="button"
+        >
           <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -162,9 +171,15 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
           autoCorrect={false}
           returnKeyType="search"
           clearButtonMode="while-editing"
+          accessibilityLabel="Search menu"
         />
         {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={() => setSearchQuery('')} style={styles.searchClearBtn}>
+          <TouchableOpacity
+            onPress={() => setSearchQuery('')}
+            style={styles.searchClearBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Clear search"
+          >
             <Text style={styles.searchClearText}>×</Text>
           </TouchableOpacity>
         )}
@@ -184,6 +199,9 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
               <TouchableOpacity
                 onPress={() => handleChipPress(item.category.id, item.index)}
                 style={[styles.chip, active && styles.chipActive]}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: active }}
+                accessibilityLabel={`Category: ${item.category.name}`}
               >
                 <Text style={[styles.chipText, active && styles.chipTextActive]}>
                   {item.category.name}

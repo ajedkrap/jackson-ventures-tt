@@ -1,7 +1,7 @@
 import { CommonActions } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { View, Text, TouchableOpacity, Animated } from 'react-native'
+import { View, Text, TouchableOpacity, Animated, AccessibilityInfo } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import styles from './OrderConfirmation.style'
@@ -32,6 +32,10 @@ const OrderConfirmation: React.FC<TOrderConfirmationProps> = ({ navigation, rout
       useNativeDriver: true,
     }).start()
   }, [scale])
+
+  useEffect(() => {
+    AccessibilityInfo.announceForAccessibility(`Order placed. Order ID ${orderId}`)
+  }, [orderId])
 
   const handleTrackOrder = () => {
     navigation.navigate('OrderTracking', { orderId })
@@ -73,13 +77,28 @@ const OrderConfirmation: React.FC<TOrderConfirmationProps> = ({ navigation, rout
         </View>
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.primaryBtn} onPress={handleTrackOrder}>
+        <TouchableOpacity
+          style={styles.primaryBtn}
+          onPress={handleTrackOrder}
+          accessibilityRole="button"
+          accessibilityLabel="Track order"
+        >
           <Text style={styles.primaryBtnText}>Track order</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.secondaryBtn} onPress={handleOrderMore}>
+        <TouchableOpacity
+          style={styles.secondaryBtn}
+          onPress={handleOrderMore}
+          accessibilityRole="button"
+          accessibilityLabel="Order more from this table"
+        >
           <Text style={styles.secondaryBtnText}>Order more from this table</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tertiaryBtn} onPress={handleSwitchTable}>
+        <TouchableOpacity
+          style={styles.tertiaryBtn}
+          onPress={handleSwitchTable}
+          accessibilityRole="button"
+          accessibilityLabel="Switch table"
+        >
           <Text style={styles.tertiaryBtnText}>Switch table</Text>
         </TouchableOpacity>
       </View>

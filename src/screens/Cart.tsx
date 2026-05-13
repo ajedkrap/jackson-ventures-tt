@@ -50,6 +50,8 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
               ])
             }
             style={styles.headerBtn}
+            accessibilityRole="button"
+            accessibilityLabel="Clear cart"
           >
             <Text style={styles.headerBtnText}>Clear</Text>
           </TouchableOpacity>
@@ -72,7 +74,11 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
       <SafeAreaView style={styles.emptyContainer}>
         <Text style={styles.emptyTitle}>Your cart is empty</Text>
         <Text style={styles.emptyBody}>Add items from the menu to start your order.</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.primaryBtn}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.primaryBtn}
+          accessibilityRole="button"
+        >
           <Text style={styles.primaryBtnText}>Browse menu</Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -144,6 +150,7 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
               multiline
               style={styles.noteInput}
               maxLength={300}
+              accessibilityLabel="Customer note"
             />
           </View>
         }
@@ -159,6 +166,11 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
           style={[styles.placeBtn, (submitting || !tableId) && styles.placeBtnDisabled]}
           onPress={handlePlaceOrder}
           disabled={submitting || !tableId}
+          accessibilityRole="button"
+          accessibilityState={{ disabled: submitting || !tableId, busy: submitting }}
+          accessibilityLabel={
+            submitting ? 'Placing order' : `Place order, total ${formatPrice(subtotal)}`
+          }
         >
           {submitting ? (
             <ActivityIndicator color={Colors.textInverse} />

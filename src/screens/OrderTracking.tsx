@@ -51,7 +51,7 @@ const OrderTracking = ({ navigation, route }: Props) => {
       <View style={styles.centered}>
         <Text style={styles.errorTitle}>{`Couldn't load order`}</Text>
         <Text style={styles.errorBody}>{error.message}</Text>
-        <TouchableOpacity onPress={retry} style={styles.retryBtn}>
+        <TouchableOpacity onPress={retry} style={styles.retryBtn} accessibilityRole="button">
           <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -89,7 +89,19 @@ const OrderTracking = ({ navigation, route }: Props) => {
             const isCurrent = index === currentIndex
             const isLast = index === STATUS_FLOW.length - 1
             return (
-              <View style={styles.stepRow} key={status}>
+              <View
+                style={styles.stepRow}
+                key={status}
+                accessible
+                accessibilityRole="text"
+                accessibilityLabel={
+                  isDone
+                    ? `${STATUS_LABELS[status]}: completed`
+                    : isCurrent
+                      ? `${STATUS_LABELS[status]}: current. ${STATUS_DESCRIPTIONS[status]}`
+                      : `${STATUS_LABELS[status]}: not yet started`
+                }
+              >
                 <View style={styles.stepIndicatorCol}>
                   <View
                     style={[styles.stepCircle, (isDone || isCurrent) && styles.stepCircleActive]}
@@ -119,7 +131,11 @@ const OrderTracking = ({ navigation, route }: Props) => {
         {error && (
           <View style={styles.banner}>
             <Text style={styles.bannerText}>{`Couldn't refresh — ${error.message}`}</Text>
-            <TouchableOpacity onPress={retry}>
+            <TouchableOpacity
+              onPress={retry}
+              accessibilityRole="button"
+              accessibilityLabel="Retry refresh"
+            >
               <Text style={styles.bannerRetry}>Retry</Text>
             </TouchableOpacity>
           </View>
