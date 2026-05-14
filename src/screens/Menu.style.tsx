@@ -45,24 +45,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.sm,
   },
-  headerCartText: {
-    color: Colors.textInverse,
-    fontSize: FontSize.md,
-    fontWeight: '600',
-  },
-  headerCartBadge: {
-    width: 20,
-    height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: Radius.pill,
-    backgroundColor: Colors.error,
-  },
-  headerCartBadgeText: {
-    color: Colors.textInverse,
-    fontSize: FontSize.sm,
-    fontWeight: '600',
-  },
   chipsRow: {
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm,

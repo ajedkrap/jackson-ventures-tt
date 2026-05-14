@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import {
   View,
   Text,
@@ -17,9 +17,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import styles from './Menu.style'
 
+import HeaderCart from '@/components/HeaderCart'
 import type { ICategory, IMenuItem } from '@/models/menu'
 import { TAppStackParamList } from '@/navigation/types'
-import { useCartStore } from '@/state/cartStore'
 import { useMenuStore } from '@/state/menuStore'
 import { Colors } from '@/theme'
 
@@ -31,7 +31,6 @@ const formatPrice = (n: number) => `$${n.toFixed(2)}`
 const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
   const { tableId } = route.params
   const { menu, loading, error, fetchMenu } = useMenuStore()
-  const { lines } = useCartStore()
   const sectionListRef = useRef<SectionList<IMenuItem, { category: ICategory }>>(null)
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -40,26 +39,14 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
     fetchMenu(tableId)
   }, [tableId, fetchMenu])
 
+  const handleOpenCart = useCallback(() => navigation.navigate('Cart'), [navigation])
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: menu?.restaurant.name ?? 'Menu',
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Cart')}
-          style={styles.headerCartBtn}
-          accessibilityRole="button"
-          accessibilityLabel="Open cart"
-        >
-          <Text style={styles.headerCartText}>Cart</Text>
-          {lines.length > 0 && (
-            <View style={styles.headerCartBadge}>
-              <Text style={styles.headerCartBadgeText}>{lines.length}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-      ),
+      headerRight: () => <HeaderCart onPress={handleOpenCart} />,
     })
-  }, [menu, lines, navigation])
+  }, [menu, navigation, handleOpenCart])
 
   const sections = useMemo<TMenuSectionData[]>(() => {
     if (!menu) return []
