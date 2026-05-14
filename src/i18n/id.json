@@ -1,0 +1,126 @@
+{
+  "common": {
+    "retry": "Coba lagi",
+    "cancel": "Batal",
+    "tryAgain": "Coba lagi"
+  },
+  "scanner": {
+    "loadingCamera": "Memuat kamera…",
+    "permissionTitle": "Akses kamera dibutuhkan",
+    "permissionBody": "Kamera digunakan untuk memindai QR meja.",
+    "grantAccess": "Izinkan akses",
+    "openSettings": "Buka pengaturan",
+    "manualEntry": "Masukkan ID meja secara manual",
+    "hint": "Arahkan ke QR di meja Anda",
+    "invalidQrTitle": "QR tidak valid",
+    "invalidQrBody": "QR ini bukan dari meja IPOT. Pindai QR meja yang benar.",
+    "modalTitle": "Masukkan ID meja",
+    "modalBody": "Temukan ID yang tercetak di meja Anda (cth. T001).",
+    "modalInputError": "Hanya boleh huruf, angka, tanda hubung, atau garis bawah.",
+    "continue": "Lanjut",
+    "a11y": {
+      "grantAccess": "Izinkan akses ke kamera",
+      "openSettings": "Buka pengaturan untuk mengizinkan akses kamera",
+      "tableIdInput": "Input ID meja"
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "errorTitle": "Gagal memuat menu",
+    "noMenuData": "Menu tidak tersedia.",
+    "searchPlaceholder": "Cari menu",
+    "noMatches": "Tidak ditemukan",
+    "noMatchesBody": "Tidak ada hasil untuk \"{{query}}\".",
+    "noItems": "Tidak ada item.",
+    "cart": "Keranjang",
+    "a11y": {
+      "openCart": "Buka keranjang",
+      "openCartWithCount": "Buka keranjang, {{count}} item",
+      "clearSearch": "Hapus pencarian",
+      "category": "Kategori: {{name}}",
+      "itemRow": "{{name}}, {{price}}"
+    }
+  },
+  "itemDetail": {
+    "title": "Atur pesanan",
+    "notFound": "Item tidak ditemukan",
+    "backToMenu": "Kembali ke menu",
+    "quantity": "Jumlah",
+    "required": "Wajib",
+    "optional": "Opsional",
+    "upTo": "Maksimal {{n}}",
+    "errorRequired": "Pilih {{name}} terlebih dahulu.",
+    "errorMaxSelections": "Maksimal {{n}} pilihan.",
+    "addToCart": "Tambah ke keranjang — {{total}}",
+    "a11y": {
+      "decreaseQty": "Kurangi jumlah",
+      "increaseQty": "Tambah jumlah",
+      "addToCart": "Tambah ke keranjang, total {{total}}",
+      "addedAnnouncement": "{{count}} {{name}} ditambahkan ke keranjang"
+    }
+  },
+  "cart": {
+    "title": "Keranjang",
+    "titleWithCount": "Keranjang · {{count}}",
+    "empty": "Keranjang masih kosong",
+    "emptyBody": "Tambahkan item dari menu untuk memulai pesanan.",
+    "browseMenu": "Lihat menu",
+    "clear": "Kosongkan",
+    "clearTitle": "Kosongkan keranjang?",
+    "clearMessage": "Semua item akan dihapus.",
+    "customerNote": "Catatan",
+    "notePlaceholder": "Alergi, instruksi khusus…",
+    "subtotal": "Subtotal",
+    "placeOrder": "Pesan sekarang",
+    "a11y": {
+      "clearCart": "Kosongkan keranjang",
+      "remove": "Hapus {{name}}",
+      "decreaseQty": "Kurangi jumlah",
+      "increaseQty": "Tambah jumlah",
+      "customerNote": "Catatan",
+      "placingOrder": "Mengirim pesanan",
+      "placeOrderWithTotal": "Pesan sekarang, total {{total}}"
+    }
+  },
+  "orderConfirmation": {
+    "title": "Pesanan diterima",
+    "heroTitle": "Pesanan diterima",
+    "heroSubtitle": "Pesanan telah dikirim ke dapur.",
+    "orderIdLabel": "ID PESANAN",
+    "trackOrder": "Lacak pesanan",
+    "orderMore": "Pesan lagi dari meja ini",
+    "switchTable": "Ganti meja",
+    "a11y": {
+      "announcement": "Pesanan diterima. ID Pesanan {{id}}"
+    }
+  },
+  "orderTracking": {
+    "title": "Status pesanan",
+    "errorTitle": "Gagal memuat pesanan",
+    "orderNotFound": "Pesanan tidak ditemukan.",
+    "orderIdLabel": "ID PESANAN",
+    "estimatedPrep": "Estimasi penyajian",
+    "minutes": "{{n}} menit",
+    "refreshError": "Gagal memperbarui — {{message}}",
+    "status": {
+      "pending": "Menunggu",
+      "confirmed": "Diterima",
+      "preparing": "Disiapkan",
+      "ready": "Siap diambil",
+      "served": "Selesai"
+    },
+    "statusDesc": {
+      "pending": "Menunggu dapur menerima pesanan Anda.",
+      "confirmed": "Pesanan Anda telah diterima.",
+      "preparing": "Dapur sedang memasak.",
+      "ready": "Pesanan Anda siap diambil.",
+      "served": "Pesanan telah disajikan. Selamat menikmati!"
+    },
+    "a11y": {
+      "retryRefresh": "Coba muat ulang",
+      "stepCompleted": "{{label}}: selesai",
+      "stepCurrent": "{{label}}: sedang berjalan. {{description}}",
+      "stepFuture": "{{label}}: belum dimulai"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useLayoutEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View, Text, ScrollView, TouchableOpacity, Image, AccessibilityInfo } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -20,13 +21,16 @@ import { formatPrice, formatPriceModifier } from '@/utils/format'
 
 type TItemDetailProps = NativeStackScreenProps<TAppStackParamList, 'ItemDetail'>
 
-const groupHelperText = (group: ICustomizationGroup): string => {
-  if (group.required) return 'Required'
-  if (group.max_selections === 1) return 'Optional'
-  return `Up to ${group.max_selections}`
+type TFn = (key: string, opts?: Record<string, unknown>) => string
+
+const groupHelperText = (group: ICustomizationGroup, t: TFn): string => {
+  if (group.required) return t('itemDetail.required')
+  if (group.max_selections === 1) return t('itemDetail.optional')
+  return t('itemDetail.upTo', { n: group.max_selections })
 }
 
 const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
+  const { t } = useTranslation()
   const { itemId } = route.params
   const { menu } = useMenuStore()
   const { addLine } = useCartStore()
@@ -39,19 +43,19 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
   )
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: item?.name ?? 'Customize' })
-  }, [item, navigation])
+    navigation.setOptions({ title: item?.name ?? t('itemDetail.title') })
+  }, [item, navigation, t])
 
   if (!item) {
     return (
       <SafeAreaView style={styles.notFound}>
-        <Text style={styles.errorTitle}>Item not found</Text>
+        <Text style={styles.errorTitle}>{t('itemDetail.notFound')}</Text>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.primaryBtn}
           accessibilityRole="button"
         >
-          <Text style={styles.primaryBtnText}>Back to menu</Text>
+          <Text style={styles.primaryBtnText}>{t('itemDetail.backToMenu')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     )
@@ -65,7 +69,9 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
   const handleAddToCart = () => {
     if (!isValid) return
     addLine(buildCartLine(item, selection, quantity))
-    AccessibilityInfo.announceForAccessibility(`Added ${quantity} ${item.name} to cart`)
+    AccessibilityInfo.announceForAccessibility(
+      t('itemDetail.a11y.addedAnnouncement', { count: quantity, name: item.name })
+    )
     navigation.goBack()
   }
 
@@ -91,13 +97,13 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
         <View style={styles.divider} />
 
         <View style={styles.qtyRow}>
-          <Text style={styles.qtyLabel}>Quantity</Text>
+          <Text style={styles.qtyLabel}>{t('itemDetail.quantity')}</Text>
           <View style={styles.qtyStepper}>
             <TouchableOpacity
               onPress={() => setQuantity((q) => Math.max(1, q - 1))}
               disabled={quantity <= 1}
               style={[styles.qtyBtn, quantity <= 1 && styles.qtyBtnDisabled]}
-              accessibilityLabel="Decrease quantity"
+              accessibilityLabel={t('itemDetail.a11y.decreaseQty')}
             >
               <Text style={styles.qtyBtnText}>−</Text>
             </TouchableOpacity>
@@ -105,7 +111,7 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={() => setQuantity((q) => Math.min(99, q + 1))}
               style={styles.qtyBtn}
-              accessibilityLabel="Increase quantity"
+              accessibilityLabel={t('itemDetail.a11y.increaseQty')}
             >
               <Text style={styles.qtyBtnText}>+</Text>
             </TouchableOpacity>
@@ -123,14 +129,14 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
               <View style={styles.groupHeader}>
                 <Text style={styles.groupTitle}>{group.name}</Text>
                 <Text style={[styles.groupHelper, group.required && styles.groupHelperRequired]}>
-                  {groupHelperText(group)}
+                  {groupHelperText(group, t)}
                 </Text>
               </View>
               {groupError && (
                 <Text style={styles.groupError}>
                   {groupError.reason === 'required'
-                    ? `Please choose a ${group.name.toLowerCase()}.`
-                    : `Max ${group.max_selections} selections.`}
+                    ? t('itemDetail.errorRequired', { name: group.name.toLowerCase() })
+                    : t('itemDetail.errorMaxSelections', { n: group.max_selections })}
                 </Text>
               )}
               {group.options.map((option) => {
@@ -180,9 +186,11 @@ const ItemDetail: React.FC<TItemDetailProps> = ({ navigation, route }) => {
           onPress={handleAddToCart}
           accessibilityRole="button"
           accessibilityState={{ disabled: !isValid }}
-          accessibilityLabel={`Add to cart, total ${formatPrice(total)}`}
+          accessibilityLabel={t('itemDetail.a11y.addToCart', { total: formatPrice(total) })}
         >
-          <Text style={styles.addBtnText}>Add to cart — {formatPrice(total)}</Text>
+          <Text style={styles.addBtnText}>
+            {t('itemDetail.addToCart', { total: formatPrice(total) })}
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

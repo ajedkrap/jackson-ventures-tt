@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useLayoutEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
@@ -25,6 +26,7 @@ import { formatPrice } from '@/utils/format'
 type TCartProps = NativeStackScreenProps<TAppStackParamList, 'Cart'>
 
 const Cart: React.FC<TCartProps> = ({ navigation }) => {
+  const { t } = useTranslation()
   const lines = useCartStore((s) => s.lines)
   const customerNote = useCartStore((s) => s.customerNote)
   const updateQuantity = useCartStore((s) => s.updateQuantity)
@@ -39,25 +41,25 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: itemCount > 0 ? `Cart · ${itemCount}` : 'Cart',
+      title: itemCount > 0 ? t('cart.titleWithCount', { count: itemCount }) : t('cart.title'),
       headerRight: () =>
         lines.length > 0 ? (
           <TouchableOpacity
             onPress={() =>
-              Alert.alert('Clear cart?', 'This will remove all items.', [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Clear', style: 'destructive', onPress: () => clear() },
+              Alert.alert(t('cart.clearTitle'), t('cart.clearMessage'), [
+                { text: t('common.cancel'), style: 'cancel' },
+                { text: t('cart.clear'), style: 'destructive', onPress: () => clear() },
               ])
             }
             style={styles.headerBtn}
             accessibilityRole="button"
-            accessibilityLabel="Clear cart"
+            accessibilityLabel={t('cart.a11y.clearCart')}
           >
-            <Text style={styles.headerBtnText}>Clear</Text>
+            <Text style={styles.headerBtnText}>{t('cart.clear')}</Text>
           </TouchableOpacity>
         ) : null,
     })
-  }, [lines, itemCount, navigation, clear])
+  }, [lines, itemCount, navigation, clear, t])
 
   const handlePlaceOrder = async () => {
     if (lines.length === 0 || !tableId || submitting) return
@@ -72,14 +74,14 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
   if (lines.length === 0) {
     return (
       <SafeAreaView style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>Your cart is empty</Text>
-        <Text style={styles.emptyBody}>Add items from the menu to start your order.</Text>
+        <Text style={styles.emptyTitle}>{t('cart.empty')}</Text>
+        <Text style={styles.emptyBody}>{t('cart.emptyBody')}</Text>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.primaryBtn}
           accessibilityRole="button"
         >
-          <Text style={styles.primaryBtnText}>Browse menu</Text>
+          <Text style={styles.primaryBtnText}>{t('cart.browseMenu')}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     )
@@ -102,7 +104,7 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => removeLine(line.signature)}
             style={styles.removeBtn}
-            accessibilityLabel={`Remove ${line.name}`}
+            accessibilityLabel={t('cart.a11y.remove', { name: line.name })}
           >
             <Text style={styles.removeBtnText}>×</Text>
           </TouchableOpacity>
@@ -112,7 +114,7 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => updateQuantity(line.signature, line.quantity - 1)}
               style={styles.qtyBtn}
-              accessibilityLabel="Decrease quantity"
+              accessibilityLabel={t('cart.a11y.decreaseQty')}
             >
               <Text style={styles.qtyBtnText}>−</Text>
             </TouchableOpacity>
@@ -120,7 +122,7 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => updateQuantity(line.signature, line.quantity + 1)}
               style={styles.qtyBtn}
-              accessibilityLabel="Increase quantity"
+              accessibilityLabel={t('cart.a11y.increaseQty')}
             >
               <Text style={styles.qtyBtnText}>+</Text>
             </TouchableOpacity>
@@ -141,16 +143,16 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
         contentContainerStyle={styles.listContent}
         ListFooterComponent={
           <View style={styles.noteWrap}>
-            <Text style={styles.noteLabel}>Customer note</Text>
+            <Text style={styles.noteLabel}>{t('cart.customerNote')}</Text>
             <TextInput
               value={customerNote}
               onChangeText={setCustomerNote}
-              placeholder="Allergies, special instructions…"
+              placeholder={t('cart.notePlaceholder')}
               placeholderTextColor={Colors.textMuted}
               multiline
               style={styles.noteInput}
               maxLength={300}
-              accessibilityLabel="Customer note"
+              accessibilityLabel={t('cart.a11y.customerNote')}
             />
           </View>
         }
@@ -158,7 +160,7 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
       />
       <View style={styles.footer}>
         <View style={styles.totalRow}>
-          <Text style={styles.totalLabel}>Subtotal</Text>
+          <Text style={styles.totalLabel}>{t('cart.subtotal')}</Text>
           <Text style={styles.totalValue}>{formatPrice(subtotal)}</Text>
         </View>
         {submitError && <Text style={styles.errorText}>{submitError.message}</Text>}
@@ -169,13 +171,15 @@ const Cart: React.FC<TCartProps> = ({ navigation }) => {
           accessibilityRole="button"
           accessibilityState={{ disabled: submitting || !tableId, busy: submitting }}
           accessibilityLabel={
-            submitting ? 'Placing order' : `Place order, total ${formatPrice(subtotal)}`
+            submitting
+              ? t('cart.a11y.placingOrder')
+              : t('cart.a11y.placeOrderWithTotal', { total: formatPrice(subtotal) })
           }
         >
           {submitting ? (
             <ActivityIndicator color={Colors.textInverse} />
           ) : (
-            <Text style={styles.placeBtnText}>Place order</Text>
+            <Text style={styles.placeBtnText}>{t('cart.placeOrder')}</Text>
           )}
         </TouchableOpacity>
       </View>

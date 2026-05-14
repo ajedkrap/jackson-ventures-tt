@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Animated, Text, TouchableOpacity } from 'react-native'
 
 import styles from './HeaderCart.style'
@@ -10,6 +11,7 @@ interface IHeaderCartProps {
 }
 
 const HeaderCart: React.FC<IHeaderCartProps> = ({ onPress }) => {
+  const { t } = useTranslation()
   const count = useCartStore((s) => s.lines.length)
   const scale = useRef(new Animated.Value(1)).current
   const prevCountRef = useRef(count)
@@ -39,9 +41,11 @@ const HeaderCart: React.FC<IHeaderCartProps> = ({ onPress }) => {
       onPress={onPress}
       style={styles.container}
       accessibilityRole="button"
-      accessibilityLabel={count > 0 ? `Open cart, ${count} items` : 'Open cart'}
+      accessibilityLabel={
+        count > 0 ? t('menu.a11y.openCartWithCount', { count }) : t('menu.a11y.openCart')
+      }
     >
-      <Text style={styles.label}>Cart</Text>
+      <Text style={styles.label}>{t('menu.cart')}</Text>
       {count > 0 && (
         <Animated.View style={[styles.badge, { transform: [{ scale }] }]}>
           <Animated.Text style={[styles.badgeText, { transform: [{ scale }] }]}>

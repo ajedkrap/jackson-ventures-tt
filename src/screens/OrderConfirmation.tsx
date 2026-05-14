@@ -1,6 +1,7 @@
 import { CommonActions } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View, Text, TouchableOpacity, Animated, AccessibilityInfo } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -12,17 +13,18 @@ import { useMenuStore } from '@/state/menuStore'
 type TOrderConfirmationProps = NativeStackScreenProps<TAppStackParamList, 'OrderConfirmation'>
 
 const OrderConfirmation: React.FC<TOrderConfirmationProps> = ({ navigation, route }) => {
+  const { t } = useTranslation()
   const { orderId } = route.params
   const scale = useRef(new Animated.Value(0)).current
   const { tableId } = useMenuStore()
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Order Placed',
+      title: t('orderConfirmation.title'),
       headerBackVisible: false,
       gestureEnabled: false,
     })
-  }, [navigation])
+  }, [navigation, t])
 
   useEffect(() => {
     Animated.spring(scale, {
@@ -34,8 +36,10 @@ const OrderConfirmation: React.FC<TOrderConfirmationProps> = ({ navigation, rout
   }, [scale])
 
   useEffect(() => {
-    AccessibilityInfo.announceForAccessibility(`Order placed. Order ID ${orderId}`)
-  }, [orderId])
+    AccessibilityInfo.announceForAccessibility(
+      t('orderConfirmation.a11y.announcement', { id: orderId })
+    )
+  }, [orderId, t])
 
   const handleTrackOrder = () => {
     navigation.navigate('OrderTracking', { orderId })
@@ -69,10 +73,10 @@ const OrderConfirmation: React.FC<TOrderConfirmationProps> = ({ navigation, rout
         <Animated.View style={[styles.successCircle, { transform: [{ scale }] }]}>
           <Text style={styles.checkmark}>✓</Text>
         </Animated.View>
-        <Text style={styles.title}>Order placed</Text>
-        <Text style={styles.subtitle}>{`We've sent it to the kitchen.`}</Text>
+        <Text style={styles.title}>{t('orderConfirmation.heroTitle')}</Text>
+        <Text style={styles.subtitle}>{t('orderConfirmation.heroSubtitle')}</Text>
         <View style={styles.orderIdWrap}>
-          <Text style={styles.orderIdLabel}>ORDER ID</Text>
+          <Text style={styles.orderIdLabel}>{t('orderConfirmation.orderIdLabel')}</Text>
           <Text style={styles.orderIdValue}>{orderId}</Text>
         </View>
       </View>
@@ -81,25 +85,25 @@ const OrderConfirmation: React.FC<TOrderConfirmationProps> = ({ navigation, rout
           style={styles.primaryBtn}
           onPress={handleTrackOrder}
           accessibilityRole="button"
-          accessibilityLabel="Track order"
+          accessibilityLabel={t('orderConfirmation.trackOrder')}
         >
-          <Text style={styles.primaryBtnText}>Track order</Text>
+          <Text style={styles.primaryBtnText}>{t('orderConfirmation.trackOrder')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.secondaryBtn}
           onPress={handleOrderMore}
           accessibilityRole="button"
-          accessibilityLabel="Order more from this table"
+          accessibilityLabel={t('orderConfirmation.orderMore')}
         >
-          <Text style={styles.secondaryBtnText}>Order more from this table</Text>
+          <Text style={styles.secondaryBtnText}>{t('orderConfirmation.orderMore')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tertiaryBtn}
           onPress={handleSwitchTable}
           accessibilityRole="button"
-          accessibilityLabel="Switch table"
+          accessibilityLabel={t('orderConfirmation.switchTable')}
         >
-          <Text style={styles.tertiaryBtnText}>Switch table</Text>
+          <Text style={styles.tertiaryBtnText}>{t('orderConfirmation.switchTable')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

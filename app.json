@@ -34,7 +34,8 @@
         {
           "cameraPermission": "Allow Jackson Ventures Test to access your camera to scan table QR codes."
         }
-      ]
+      ],
+      "expo-localization"
     ]
   }
 }

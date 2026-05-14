@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera'
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
@@ -23,6 +24,7 @@ import { parseTableQr } from '@/utils/qr'
 type TScannerProps = NativeStackScreenProps<TAppStackParamList, 'Scanner'>
 
 const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
+  const { t } = useTranslation()
   const [permission, requestPermission] = useCameraPermissions()
   const [manualOpen, setManualOpen] = useState(false)
   const [manualInput, setManualInput] = useState('')
@@ -39,9 +41,9 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
       return
     }
 
-    Alert.alert('Invalid QR code', 'This QR is not from an IPOT table. Please scan a table QR.', [
+    Alert.alert(t('scanner.invalidQrTitle'), t('scanner.invalidQrBody'), [
       {
-        text: 'Try again',
+        text: t('common.tryAgain'),
         onPress: () => {
           scannedRef.current = false
         },
@@ -58,7 +60,7 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
   const submitManualEntry = () => {
     const tableId = parseTableQr(`ipot://table/${manualInput.trim()}`)
     if (!tableId) {
-      setManualError('Use letters, numbers, dashes or underscores only.')
+      setManualError(t('scanner.modalInputError'))
       return
     }
     setManualOpen(false)
@@ -78,10 +80,10 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
       >
         <Pressable style={styles.modalBackdropPress} onPress={() => setManualOpen(false)} />
         <View style={styles.modalCard}>
-          <Text style={styles.modalTitle}>Enter table ID</Text>
-          <Text style={styles.modalBody}>Find the ID printed on your table (e.g. T001).</Text>
+          <Text style={styles.modalTitle}>{t('scanner.modalTitle')}</Text>
+          <Text style={styles.modalBody}>{t('scanner.modalBody')}</Text>
           <TextInput
-            accessibilityLabel="Table ID input"
+            accessibilityLabel={t('scanner.a11y.tableIdInput')}
             value={manualInput}
             onChangeText={(v) => {
               setManualInput(v)
@@ -103,14 +105,14 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
               onPress={() => setManualOpen(false)}
               style={styles.modalSecondaryBtn}
             >
-              <Text style={styles.modalSecondaryText}>Cancel</Text>
+              <Text style={styles.modalSecondaryText}>{t('common.cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               accessibilityRole="button"
               onPress={submitManualEntry}
               style={styles.modalPrimaryBtn}
             >
-              <Text style={styles.modalPrimaryText}>Continue</Text>
+              <Text style={styles.modalPrimaryText}>{t('scanner.continue')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -121,7 +123,7 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
   if (!permission) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.body}>Loading camera…</Text>
+        <Text style={styles.body}>{t('scanner.loadingCamera')}</Text>
       </View>
     )
   }
@@ -129,33 +131,33 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
   if (!permission.granted) {
     return (
       <SafeAreaView style={styles.centered}>
-        <Text style={styles.title}>Camera access needed</Text>
-        <Text style={styles.body}>We use your camera to scan table QR codes.</Text>
+        <Text style={styles.title}>{t('scanner.permissionTitle')}</Text>
+        <Text style={styles.body}>{t('scanner.permissionBody')}</Text>
         {permission.canAskAgain ? (
           <TouchableOpacity
             style={styles.primaryButton}
             onPress={requestPermission}
             accessibilityRole="button"
-            accessibilityLabel="Grant access to camera"
+            accessibilityLabel={t('scanner.a11y.grantAccess')}
           >
-            <Text style={styles.primaryButtonText}>Grant access</Text>
+            <Text style={styles.primaryButtonText}>{t('scanner.grantAccess')}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={styles.primaryButton}
             onPress={() => Linking.openSettings()}
             accessibilityRole="link"
-            accessibilityLabel="Open settings to grant access to camera"
+            accessibilityLabel={t('scanner.a11y.openSettings')}
           >
-            <Text style={styles.primaryButtonText}>Open settings</Text>
+            <Text style={styles.primaryButtonText}>{t('scanner.openSettings')}</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
           onPress={openManualEntry}
           accessibilityRole="button"
-          accessibilityLabel="Enter table ID manually"
+          accessibilityLabel={t('scanner.manualEntry')}
         >
-          <Text style={styles.linkButton}>Enter table ID manually</Text>
+          <Text style={styles.linkButton}>{t('scanner.manualEntry')}</Text>
         </TouchableOpacity>
         {renderManualEntryModal()}
       </SafeAreaView>
@@ -172,7 +174,7 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
       />
       <SafeAreaView style={styles.overlay} pointerEvents="box-none">
         <View style={styles.topBar}>
-          <Text style={styles.hint}>{`Point at the table's QR code`}</Text>
+          <Text style={styles.hint}>{t('scanner.hint')}</Text>
         </View>
         <View style={styles.frameWrap}>
           <View style={styles.frame} />
@@ -181,9 +183,9 @@ const Scanner: React.FC<TScannerProps> = ({ navigation }) => {
           <TouchableOpacity
             onPress={openManualEntry}
             accessibilityRole="button"
-            accessibilityLabel="Enter table ID manually"
+            accessibilityLabel={t('scanner.manualEntry')}
           >
-            <Text style={styles.linkButtonLight}>Enter table ID manually</Text>
+            <Text style={styles.linkButtonLight}>{t('scanner.manualEntry')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

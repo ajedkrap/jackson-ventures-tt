@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   View,
   Text,
@@ -29,6 +30,7 @@ type TMenuSectionData = SectionListData<IMenuItem, { category: ICategory }>
 const formatPrice = (n: number) => `$${n.toFixed(2)}`
 
 const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
+  const { t } = useTranslation()
   const { tableId } = route.params
   const { menu, loading, error, fetchMenu } = useMenuStore()
   const sectionListRef = useRef<SectionList<IMenuItem, { category: ICategory }>>(null)
@@ -43,10 +45,10 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: menu?.restaurant.name ?? 'Menu',
+      title: menu?.restaurant.name ?? t('menu.title'),
       headerRight: () => <HeaderCart onPress={handleOpenCart} />,
     })
-  }, [menu, navigation, handleOpenCart])
+  }, [menu, navigation, handleOpenCart, t])
 
   const sections = useMemo<TMenuSectionData[]>(() => {
     if (!menu) return []
@@ -90,7 +92,10 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
       style={styles.itemRow}
       onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
       accessibilityRole="button"
-      accessibilityLabel={`${item.name}, ${formatPrice(item.price)}`}
+      accessibilityLabel={t('menu.a11y.itemRow', {
+        name: item.name,
+        price: formatPrice(item.price),
+      })}
     >
       <View style={styles.itemTextCol}>
         <Text style={styles.itemName}>{item.name}</Text>
@@ -124,14 +129,14 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
   if (error && !menu) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorTitle}>{`Couldn't load menu`}</Text>
+        <Text style={styles.errorTitle}>{t('menu.errorTitle')}</Text>
         <Text style={styles.errorBody}>{error.message}</Text>
         <TouchableOpacity
           style={styles.retryBtn}
           onPress={() => fetchMenu(tableId)}
           accessibilityRole="button"
         >
-          <Text style={styles.retryText}>Retry</Text>
+          <Text style={styles.retryText}>{t('common.retry')}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -140,7 +145,7 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
   if (!menu) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorBody}>No menu data.</Text>
+        <Text style={styles.errorBody}>{t('menu.noMenuData')}</Text>
       </View>
     )
   }
@@ -151,21 +156,21 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
         <TextInput
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search menu"
+          placeholder={t('menu.searchPlaceholder')}
           placeholderTextColor={Colors.textMuted}
           style={styles.searchInput}
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="search"
           clearButtonMode="while-editing"
-          accessibilityLabel="Search menu"
+          accessibilityLabel={t('menu.searchPlaceholder')}
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity
             onPress={() => setSearchQuery('')}
             style={styles.searchClearBtn}
             accessibilityRole="button"
-            accessibilityLabel="Clear search"
+            accessibilityLabel={t('menu.a11y.clearSearch')}
           >
             <Text style={styles.searchClearText}>×</Text>
           </TouchableOpacity>
@@ -188,7 +193,7 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
                 style={[styles.chip, active && styles.chipActive]}
                 accessibilityRole="tab"
                 accessibilityState={{ selected: active }}
-                accessibilityLabel={`Category: ${item.category.name}`}
+                accessibilityLabel={t('menu.a11y.category', { name: item.category.name })}
               >
                 <Text style={[styles.chipText, active && styles.chipTextActive]}>
                   {item.category.name}
@@ -209,9 +214,9 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
           ItemSeparatorComponent={() => <View style={styles.separator} />}
           ListEmptyComponent={
             <View style={styles.searchEmpty}>
-              <Text style={styles.searchEmptyTitle}>No matches</Text>
+              <Text style={styles.searchEmptyTitle}>{t('menu.noMatches')}</Text>
               <Text style={styles.searchEmptyBody}>
-                {`We couldn't find anything for "${searchQuery.trim()}".`}
+                {t('menu.noMatchesBody', { query: searchQuery.trim() })}
               </Text>
             </View>
           }
@@ -231,7 +236,7 @@ const Menu: React.FC<TMenuProps> = ({ navigation, route }) => {
           )}
           renderItem={renderItemRow}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
-          ListEmptyComponent={<Text style={styles.emptyText}>No items.</Text>}
+          ListEmptyComponent={<Text style={styles.emptyText}>{t('menu.noItems')}</Text>}
         />
       )}
     </SafeAreaView>
