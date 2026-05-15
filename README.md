@@ -156,6 +156,6 @@ A preview APK is available via EAS at the link at the top of this README.
 
 To build your own:
 
-\`\`\`bash
+```bash
 npx eas-cli build -p android --profile preview
-\`\`\`
+```
