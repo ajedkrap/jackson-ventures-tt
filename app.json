@@ -23,7 +23,11 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "dev.dezza.jacksonventuretest"
+      "package": "dev.dezza.jacksonventuretest",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +40,11 @@
         }
       ],
       "expo-localization"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "01c3d166-bb2b-4ace-8e16-fac3ea6b61fc"
+      }
+    }
   }
 }
