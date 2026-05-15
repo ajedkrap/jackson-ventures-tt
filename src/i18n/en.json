@@ -1,0 +1,127 @@
+{
+    "common": {
+      "retry": "Retry",
+      "cancel": "Cancel",
+      "tryAgain": "Try again"
+    },
+    "scanner": {
+      "loadingCamera": "Loading camera…",
+      "permissionTitle": "Camera access needed",
+      "permissionBody": "We use your camera to scan table QR codes.",
+      "grantAccess": "Grant access",
+      "openSettings": "Open settings",
+      "manualEntry": "Enter table ID manually",
+      "hint": "Point at the table's QR code",
+      "invalidQrTitle": "Invalid QR code",
+      "invalidQrBody": "This QR is not from an IPOT table. Please scan a table QR.",
+      "modalTitle": "Enter table ID",
+      "modalBody": "Find the ID printed on your table (e.g. T001).",
+      "modalInputError": "Use letters, numbers, dashes or underscores only.",
+      "continue": "Continue",
+      "a11y": {
+        "grantAccess": "Grant access to camera",
+        "openSettings": "Open settings to grant access to camera",
+        "tableIdInput": "Table ID input"
+      }
+    },
+    "menu": {
+      "title": "Menu",
+      "errorTitle": "Couldn't load menu",
+      "noMenuData": "No menu data.",
+      "searchPlaceholder": "Search menu",
+      "noMatches": "No matches",
+      "noMatchesBody": "We couldn't find anything for \"{{query}}\".",
+      "noItems": "No items.",
+      "cart": "Cart",
+      "a11y": {
+        "openCart": "Open cart",
+        "openCartWithCount": "Open cart, {{count}} items",
+        "clearSearch": "Clear search",
+        "category": "Category: {{name}}",
+        "itemRow": "{{name}}, {{price}}"
+      }
+    },
+    "itemDetail": {
+      "title": "Customize",
+      "notFound": "Item not found",
+      "backToMenu": "Back to menu",
+      "quantity": "Quantity",
+      "required": "Required",
+      "optional": "Optional",
+      "upTo": "Up to {{n}}",
+      "errorRequired": "Please choose a {{name}}.",
+      "errorMaxSelections": "Max {{n}} selections.",
+      "addToCart": "Add to cart — {{total}}",
+      "a11y": {
+        "decreaseQty": "Decrease quantity",
+        "increaseQty": "Increase quantity",
+        "addToCart": "Add to cart, total {{total}}",
+        "addedAnnouncement": "Added {{count}} {{name}} to cart"
+      }
+    },
+    "cart": {
+      "title": "Cart",
+      "titleWithCount": "Cart · {{count}}",
+      "empty": "Your cart is empty",
+      "emptyBody": "Add items from the menu to start your order.",
+      "browseMenu": "Browse menu",
+      "clear": "Clear",
+      "clearTitle": "Clear cart?",
+      "clearMessage": "This will remove all items.",
+      "customerNote": "Customer note",
+      "notePlaceholder": "Allergies, special instructions…",
+      "subtotal": "Subtotal",
+      "placeOrder": "Place order",
+      "a11y": {
+        "clearCart": "Clear cart",
+        "remove": "Remove {{name}}",
+        "decreaseQty": "Decrease quantity",
+        "increaseQty": "Increase quantity",
+        "customerNote": "Customer note",
+        "placingOrder": "Placing order",
+        "placeOrderWithTotal": "Place order, total {{total}}"
+      }
+    },
+    "orderConfirmation": {
+      "title": "Order Placed",
+      "heroTitle": "Order placed",
+      "heroSubtitle": "We've sent it to the kitchen.",
+      "orderIdLabel": "ORDER ID",
+      "trackOrder": "Track order",
+      "orderMore": "Order more from this table",
+      "switchTable": "Switch table",
+      "a11y": {
+        "announcement": "Order placed. Order ID {{id}}"
+      }
+    },
+    "orderTracking": {
+      "title": "Order Status",
+      "errorTitle": "Couldn't load order",
+      "orderNotFound": "Order not found.",
+      "orderIdLabel": "ORDER ID",
+      "estimatedPrep": "Estimated prep",
+      "minutes": "{{n}} min",
+      "refreshError": "Couldn't refresh — {{message}}",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "preparing": "Preparing",
+        "ready": "Ready",
+        "served": "Served"
+      },
+      "statusDesc": {
+        "pending": "Waiting for the kitchen to accept your order.",
+        "confirmed": "Your order has been accepted.",
+        "preparing": "The kitchen is cooking now.",
+        "ready": "Your order is ready for pickup.",
+        "served": "Order delivered. Enjoy!"
+      },
+      "a11y": {
+        "retryRefresh": "Retry refresh",
+        "stepCompleted": "{{label}}: completed",
+        "stepCurrent": "{{label}}: current. {{description}}",
+        "stepFuture": "{{label}}: not yet started"
+      }
+    }
+  }
+  
